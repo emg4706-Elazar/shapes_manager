@@ -2,12 +2,17 @@
   {
     "id": 0,
     "type": "Rectangle",
-    "length": 4,
-    "width": 7
+    "attributes": {
+      "length": "3",
+      "width": "4"
+    }
   },
   {
-    "id": 1,
-    "type": "Square",
-    "side": 4
+    "id": 0,
+    "type": "Circle",
+    "attributes": {
+      "quoter": "8",
+      "radius": "4"
+    }
   }
 ]

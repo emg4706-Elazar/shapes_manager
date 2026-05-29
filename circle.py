@@ -50,14 +50,26 @@ class Circle(Shape):
 
     def to_dict(self):
         """
-        Create dict with all object's data,
+        Create dict with all object's attributes,
         in order to save it in a JSON file
         :return: the data dict
         """
         dicti = {
             "id": self._id,
-            "shape_type": self._shape_type,
-            "quoter": self._quoter,
-            "radius": self._radius
+            "type": self._shape_type,
+            "attributes": {
+                "quoter": self._quoter,
+                "radius": self._radius
+            }
         }
         return dicti
+
+
+if __name__ == "__main__":
+    class_name = "Circle"
+    c4 = eval(class_name)(4,5)
+    # c = Circle(4,8)
+    c1 = c4.to_dict()
+    c2 = c4.get_area()
+    c3 = c4.get_perimeter()
+    print(c1,"\n",c2,"\n",c3)

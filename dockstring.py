@@ -38,8 +38,10 @@ def handle_create_shape(manager, logger):
     """
     1. print available shapes.
     2. get valid input from user
-    3. get valid input for attributes shape
-    4. create this shape
+    3. get input for attributes shape,   | To do validation for attributes
+        call to match function that,
+        creates a dict with all attributes
+    4. create this  shape
     args:
         1. shape manager
         2. logger
