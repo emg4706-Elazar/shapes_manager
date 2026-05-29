@@ -1,17 +1,18 @@
 [
   {
     "id": 0,
-    "type": "Square",
+    "type": "Rectangle",
     "attributes": {
-      "side": "4"
+      "length": "3",
+      "width": "4"
     }
   },
   {
     "id": 0,
-    "type": "Rectangle",
+    "type": "Circle",
     "attributes": {
-      "length": "5",
-      "width": "6"
+      "quoter": "8",
+      "radius": "4"
     }
   }
 ]

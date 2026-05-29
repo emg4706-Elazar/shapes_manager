@@ -103,7 +103,7 @@ def handle_create_shape(manager, logger):
 #===============================================================
 
 def print_shape(shape):
-    print(shape)
+    print(shape,"\n")
 
 
 def handle_display_shapes(manager, logger):
@@ -145,6 +145,10 @@ def handle_delete_shape(manager, logger):
     """
     1. get valid input, id_shape
     2. get all shapes from shape manager
+        a. extract all IDs to new list
+        b. if id shape is exist in all IDs
+        c. send the dict shape that compare to ID shape
+        d. else
     3. delete the shape by id_shape(try/except),
         It's a function with condition to check,
         if this shapes exist.
@@ -154,7 +158,15 @@ def handle_delete_shape(manager, logger):
         2. logger
     return: None
     """
-    pass
+    shape_id = get_input()
+    try:
+        deleted = manager.delete_shape(int(shape_id))
+        if deleted:
+            print("The shape was deleted successfully\n")
+    except KeyError:
+        print("This ID doesn't exist\n")
+
+    return
 
 #===============================================================================
 def print_actions():

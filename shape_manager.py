@@ -31,7 +31,19 @@ class ShapeManager:
         pass
 
     def delete_shape(self, shape_id):
-        pass
+        all_shapes = self.get_all_shapes()
+        deleted = False
+        for shape in all_shapes:
+            if shape["id"] == shape_id:
+                i = all_shapes.index(shape)
+                del self.shapes[i]
+                deleted = True
+                break
+        if deleted:
+            return deleted
+        else:
+            raise KeyError
+
 
 
     def save_to_json(self):
