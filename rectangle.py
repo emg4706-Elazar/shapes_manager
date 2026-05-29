@@ -55,10 +55,16 @@ class Rectangle(Shape):
         """
         dicti = {
             "id": self._id,
-            "shape_type": self._shape_type,
+            "type": self._shape_type,
             "length": self._length,
             "width": self._width
         }
         return dicti
 
-rec = Rectangle(3,4)
+
+if __name__ == "__main__":
+    r = Rectangle(4, 8)
+    r1 = r.to_dict()
+    r2 = r.get_area()
+    r3 = r.get_perimeter()
+    print(r1, "\n", r2, "\n", r3)

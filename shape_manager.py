@@ -1,8 +1,9 @@
-import logging
+
 from rectangle import Rectangle
 from circle import Circle
 from square import Square
 import json
+from json.decoder import JSONDecodeError
 
 
 
@@ -12,11 +13,19 @@ class ShapeManager:
         self.load_from_json()
 
     def create_shape(self, shape):
-        pass
+
+        new_object = shape["type"](**shape["attributes"])
+        self.shapes.append(new_object)
+        return
+
 
 
     def get_all_shapes(self):
-        pass
+        list_of_dicts = []
+        for shape in self.shapes:
+            conv_to_dict = shape.to_dict()
+            list_of_dicts.append(conv_to_dict)
+        return list_of_dicts
 
     def update_shape(self, shape_id, new_data):
         pass
@@ -25,34 +34,38 @@ class ShapeManager:
         pass
 
 
-
     def save_to_json(self):
+        shapes = self.get_all_shapes()
         with open("shapes.json", "w", encoding="utf-8") as f:
-            json.dump(self.shapes, f, indent=2)
+            json.dump(shapes, f, indent=2)
         return
 
 
 
     def load_from_json(self):
-        with open("shapes.json", "r", encoding="utf-8") as f:
-            self.shapes = json.load(f)
+        try:
+            with open("shapes.json", "r", encoding="utf-8") as f:
+                shapes_as_dicts = json.load(f)
+            # convert to objects
+            for d in shapes_as_dicts:
+                self.create_shape(d)
+                # How to convert dict to object
+        except JSONDecodeError:
+            self.shapes = []
         return
 
 
 
-def get_logger():
-    l = logging.getLogger('shapes')
-    l.setLevel(logging.DEBUG)
-
-    file_handler = logging.FileHandler("shape_manager.log", encoding="utf-8")
-    formatter = logging.Formatter(
-        "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
-    )
-
-    file_handler.setFormatter(formatter)
-    l.addHandler(file_handler)
-
-    return l
+if __name__ == "__main__":
+    sp = ShapeManager()
+    # all_shapes = sp.get_all_shapes()
+    # print(all_shapes)
+    # dicti = {"type": Rectangle,
+    #          "attributes": {"length": 4, "width": 6}}
+    for s in sp.shapes:
+        print(type(s))
+    else:
+        print("empty")
 
 
 

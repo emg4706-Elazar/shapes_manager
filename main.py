@@ -1,5 +1,5 @@
-from shape_manager import ShapeManager, get_logger
-
+from shape_manager import *
+from logging_config import get_logger
 
 
 def get_input():
@@ -30,26 +30,32 @@ def print_available_shapes():
 
 def get_rectangle():
     shape = {
-        "shape_type": "Rectangle",
-        "length": input("Enter length: "),
-        "width": input("Enter width: ")
+        "type": Rectangle,
+        "attributes": {
+            "length": input("Enter length: "),
+            "width": input("Enter width: ")
+        }
     }
     return shape
 
 
 def get_square():
     shape = {
-        "shape_type": "Square",
-        "side": input("Enter side: ")
+        "type": Square,
+        "attributes": {
+            "side": input("Enter side: ")
+        }
     }
     return shape
 
 
 def get_circle():
     shape = {
-        "shape_type": "Circle",
-        "radius": input("Enter radius: "),
-        "quoter": input("Enter quoter: ")
+        "type": Circle,
+        "attributes": {
+            "radius": input("Enter radius: "),
+            "quoter": input("Enter quoter: ")
+        }
     }
     return shape
 
@@ -64,30 +70,40 @@ def handle_create_shape(manager, logger):
     :param logger:
     :return:
     """
-    # dict functions
+
+
+    # dict functions, receive attributes per shape by input
     get_attributes = {
         "1": get_rectangle,
         "2": get_square,
         "3": get_circle
     }
-
     print_available_shapes()
+
+    # get available choice from user
     choice = get_valid_input_shape()
 
+    # get match attributes per shape from user
     shape = get_attributes[choice]()
 
     try:
         manager.create_shape(shape)
-        print("The shape was created successfully")
+        print("The shape was created successfully\n")
     except:
         print("Exception")
 
     return
 
+
+
+
+
+
+
 #===============================================================
 
 def print_shape(shape):
-    pass
+    print(shape)
 
 
 def handle_display_shapes(manager, logger):
@@ -101,8 +117,8 @@ def handle_display_shapes(manager, logger):
     :return:
         None
     """
-    all_shapes = manager.shapes
-    for shape in all_shapes:
+
+    for shape in manager.get_all_shapes():
         print_shape(shape)
     return
 
@@ -182,11 +198,13 @@ def main():
         choice = get_valid_input_action()
         if choice == "5":
             is_over = True
+            manager.save_to_json()
+            print("\n the data saved")
             print("End")
         else:
             actions[choice](manager, logger)
 
-        return
+    return
 
 
 if __name__ == '__main__':

@@ -54,9 +54,15 @@ class Square(Shape):
         """
         dicti = {
             "id": self._id,
-            "shape_type": self._shape_type,
+            "type": self._shape_type,
             "side": self._side
         }
         return dicti
 
 
+if __name__ == "__main__":
+    s = Square(5)
+    s1 = s.to_dict()
+    s2 = s.get_area()
+    s3 = s.get_perimeter()
+    print(s1, "\n", s2, "\n", s3)
