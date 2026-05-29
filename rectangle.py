@@ -56,8 +56,10 @@ class Rectangle(Shape):
         dicti = {
             "id": self._id,
             "type": self._shape_type,
-            "length": self._length,
-            "width": self._width
+            "attributes": {
+                "length": self._length,
+                "width": self._width
+            }
         }
         return dicti
 

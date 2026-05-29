@@ -57,15 +57,19 @@ class Circle(Shape):
         dicti = {
             "id": self._id,
             "type": self._shape_type,
-            "quoter": self._quoter,
-            "radius": self._radius
+            "attributes": {
+                "quoter": self._quoter,
+                "radius": self._radius
+            }
         }
         return dicti
 
 
 if __name__ == "__main__":
-    c = Circle(4,8)
-    c1 = c.to_dict()
-    c2 = c.get_area()
-    c3 = c.get_perimeter()
+    class_name = "Circle"
+    c4 = eval(class_name)(4,5)
+    # c = Circle(4,8)
+    c1 = c4.to_dict()
+    c2 = c4.get_area()
+    c3 = c4.get_perimeter()
     print(c1,"\n",c2,"\n",c3)

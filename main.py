@@ -30,7 +30,7 @@ def print_available_shapes():
 
 def get_rectangle():
     shape = {
-        "type": Rectangle,
+        "type": "Rectangle",
         "attributes": {
             "length": input("Enter length: "),
             "width": input("Enter width: ")
@@ -41,7 +41,7 @@ def get_rectangle():
 
 def get_square():
     shape = {
-        "type": Square,
+        "type": "Square",
         "attributes": {
             "side": input("Enter side: ")
         }
@@ -51,7 +51,7 @@ def get_square():
 
 def get_circle():
     shape = {
-        "type": Circle,
+        "type": "Circle",
         "attributes": {
             "radius": input("Enter radius: "),
             "quoter": input("Enter quoter: ")

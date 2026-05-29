@@ -55,7 +55,9 @@ class Square(Shape):
         dicti = {
             "id": self._id,
             "type": self._shape_type,
-            "side": self._side
+            "attributes": {
+                "side": self._side
+            }
         }
         return dicti
 

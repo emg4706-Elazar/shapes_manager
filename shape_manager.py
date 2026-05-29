@@ -14,7 +14,7 @@ class ShapeManager:
 
     def create_shape(self, shape):
 
-        new_object = shape["type"](**shape["attributes"])
+        new_object = eval(shape["type"])(**shape["attributes"])
         self.shapes.append(new_object)
         return
 
