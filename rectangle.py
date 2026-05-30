@@ -18,8 +18,8 @@ class Rectangle(Shape):
             3. to_dict(self)
     """
 
-    def __init__(self, length, width):
-        self._id = 0  # To-Do to complete the signature with 'id'
+    def __init__(self, length, width, _id):
+        self._id = _id # To-Do to complete the signature with 'id'
         self._length = length
         self._width = width
         self._shape_type = "Rectangle"
@@ -54,9 +54,9 @@ class Rectangle(Shape):
         :return: the data dict
         """
         dicti = {
-            "id": self._id,
             "type": self._shape_type,
             "attributes": {
+                "_id": self._id,
                 "length": self._length,
                 "width": self._width
             }
