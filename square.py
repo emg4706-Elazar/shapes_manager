@@ -18,8 +18,8 @@ class Square(Shape):
                 3. to_dict(self)
         """
 
-    def __init__(self, side):
-        self._id = 0
+    def __init__(self, side, _id):
+        self._id = _id
         self._side = side
         self._shape_type = "Square"
 
@@ -53,9 +53,9 @@ class Square(Shape):
         :return: the data dict
         """
         dicti = {
-            "id": self._id,
             "type": self._shape_type,
             "attributes": {
+                "_id": self._id,
                 "side": self._side
             }
         }

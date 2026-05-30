@@ -2,6 +2,57 @@ from shape_manager import *
 from logging_config import get_logger
 
 
+
+# ======================================================
+
+def handle_create_shape(manager, logger):
+    """
+    To Do:
+        1. Adding logs.
+        2. Input validation
+        3. match messages
+    Flow:
+        1. create dict function for input
+        2. print available shapes
+        3. receive valid input choice
+        4. get attribute  # valid attributes
+        5. add new id into attributes dict
+        6. call to manager function, create shape
+
+    :param manager:
+    :param logger:
+    :return:
+    """
+
+
+    # dict functions, receive attributes per shape by input
+    get_attributes = {
+        "1": get_rectangle,
+        "2": get_square,
+        "3": get_circle
+    }
+
+    print_available_shapes()
+
+    # get available choice from user
+    choice = get_valid_input_shape()
+
+    # get match attributes per shape from user
+    shape = get_attributes[choice]()
+
+    # add new id
+    new_id = get_new_id(manager)
+    shape["attributes"]["_id"] = new_id
+
+    try:
+        manager.create_shape(shape)
+        print("The shape was created successfully\n")
+    except:
+        print("Exception")
+
+    return
+
+
 def get_input():
     choice = input("Enter your choice: ")
     return choice
@@ -9,6 +60,7 @@ def get_input():
 
 def get_valid_input_shape():
     is_valid = False
+    user_input = ""
     while not is_valid:
         user_input = get_input()
         if user_input in ("1","2","3"):
@@ -60,107 +112,99 @@ def get_circle():
     return shape
 
 
-
-def handle_create_shape(manager, logger):
-    """
-    To Do:
-        1. Adding logs.
-        2. Input validation
-    :param manager:
-    :param logger:
-    :return:
-    """
-
-
-    # dict functions, receive attributes per shape by input
-    get_attributes = {
-        "1": get_rectangle,
-        "2": get_square,
-        "3": get_circle
-    }
-    print_available_shapes()
-
-    # get available choice from user
-    choice = get_valid_input_shape()
-
-    # get match attributes per shape from user
-    shape = get_attributes[choice]()
-
-    try:
-        manager.create_shape(shape)
-        print("The shape was created successfully\n")
-    except:
-        print("Exception")
-
-    return
-
-
-
-
-
+def get_new_id(manager):
+    new_id = 0
+    if manager.get_all_id_s():
+        maxi = max(manager.get_all_id_s())
+        new_id = maxi + 1
+    return new_id
 
 
 #===============================================================
 
-def print_shape(shape):
-    print(shape,"\n")
-
-
 def handle_display_shapes(manager, logger):
     """
-    1. get all shapes from shape_manager,
-        the shape should be as an object.
-    2. print all shapes with loop,
+    To Do:
+        1. adding logs
+        2. design the print shapes
+        3. print Match messages
+    Flow:
+        1. get all shapes from shape_manager.
+        2. print all shapes with loop,
     args:
         1. shape_manager
         2. logger
     :return:
         None
     """
-
     for shape in manager.get_all_shapes():
         print_shape(shape)
     return
 
+def print_shape(shape):
+    print(shape,"\n")
+
+
 #================================================================
 def handle_update_shape(manager, logger):
     """
-    1. get valid input
-        a. id_shape
-        b. new_data
-    2. get all shapes
-    3. change the shape by id_shape(try/except),
-        It's a function with condition to check,
-        if this shapes exist.
-    4. print match message
+    To Do:
+        1. Adding logs
+        2. valid input
+        3. match messages
+    Flow:
+        1. get input for exist id
+        2. get all exist shapes from shapes manager
+        3. get the type of the exist shape by id
+        4. call to input function by type for new data
+        5. call to manager function, update with 2,
+            arguments (shape_id, new_data)
     args:
         1. shape_manager
         2. logger
     :return: None
     """
-    pass
+    shape_id = int(input("Enter exist id: "))
+    all_shapes = manager.get_all_shapes()
+    class_name = ""
+    for shape in all_shapes:
+        if shape["attributes"]["_id"] == shape_id:
+            class_name = shape["type"]
+    # dict functions, receive attributes per shape by input
+    get_attributes = {
+        "Rectangle": get_rectangle,
+        "Square": get_square,
+        "Circle": get_circle
+    }
+    new_data = get_attributes[class_name]()
+    try:
+        updated = manager.update_shape(shape_id, new_data)
+        if updated:
+            print("The update completed")
+    except Exception as e:
+        print("This shape doesn't exist", e)
+    return
 
 #==================================================================
 def handle_delete_shape(manager, logger):
     """
-    1. get valid input, id_shape
-    2. get all shapes from shape manager
-        a. extract all IDs to new list
-        b. if id shape is exist in all IDs
-        c. send the dict shape that compare to ID shape
-        d. else
-    3. delete the shape by id_shape(try/except),
-        It's a function with condition to check,
-        if this shapes exist.
-    4. print match message
+    To Do:
+        1. Adding logs
+        2. valid input
+        3. match messages
+    Flow:
+        1. get input, id_shape
+        2. call to manager function, delete with 1,
+            arguments (shape_id)
+        3. print match message
     args:
         1. shape_manager
         2. logger
     return: None
     """
-    shape_id = get_input()
+    shape_id = int(input("\nEnter exist id: "))
     try:
-        deleted = manager.delete_shape(int(shape_id))
+        deleted = manager.delete_shape(shape_id)
         if deleted:
             print("The shape was deleted successfully\n")
     except KeyError:
@@ -183,6 +227,7 @@ def print_actions():
 
 def get_valid_input_action():
     is_valid = False
+    user_input = ""
     while not is_valid:
         user_input = get_input()
         if user_input in ("1","2","3","4","5"):
@@ -191,9 +236,31 @@ def get_valid_input_action():
             print("Invalid input")
     return user_input
 
+def to_exit(manager, logger):
+    manager.save_to_json()
+    print("\nThe data saved\n")
+    print("End")
+    is_over = True
+    return is_over
 
 
 def main():
+    """
+    To do:
+        1. Adding logs
+        2. valid input
+    Flow:
+        1. init manager
+        2. init logger
+        3. create dict functions
+        loop:
+            4. print actions
+            5. get input for action
+            6. call to match handler with 2,
+                arguments (manager, logger)
+    Args:
+    Returns:
+    """
     manager = ShapeManager()
     logger = get_logger()
 
@@ -209,10 +276,7 @@ def main():
         print_actions()
         choice = get_valid_input_action()
         if choice == "5":
-            is_over = True
-            manager.save_to_json()
-            print("\n the data saved")
-            print("End")
+            is_over = to_exit(manager, logger)
         else:
             actions[choice](manager, logger)
 
@@ -221,38 +285,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # def get_shape_attributes():
-    #     input_att = {
-    #         "1": {
-    #             "shape_type": "Square",
-    #             "side": input("Enter side: ")
-    #         },
-    #         "2": {
-    #             "shape_type": "Circle",
-    #             "radius": input("Enter radius: "),
-    #             "quoter": input("Enter quoter: ")
-    #         },
-    #         "3": {
-    #             "shape_type": "Circle",
-    #             "radius": input("Enter radius: "),
-    #             "quoter": input("Enter quoter: ")
-    #         }
-    #     }
-
-
-
 

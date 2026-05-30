@@ -1,4 +1,3 @@
-
 from rectangle import Rectangle
 from circle import Circle
 from square import Square
@@ -12,12 +11,11 @@ class ShapeManager:
         self.shapes = []
         self.load_from_json()
 
-    def create_shape(self, shape):
 
+    def create_shape(self, shape):
         new_object = eval(shape["type"])(**shape["attributes"])
         self.shapes.append(new_object)
         return
-
 
 
     def get_all_shapes(self):
@@ -27,14 +25,34 @@ class ShapeManager:
             list_of_dicts.append(conv_to_dict)
         return list_of_dicts
 
+
     def update_shape(self, shape_id, new_data):
-        pass
+        """
+        delete old shape by id,
+        and create the updated object
+        Args:
+            shape_id:
+            new_data:
+        Returns:
+        """
+        all_shapes = self.get_all_shapes()
+        updated_shape = new_data
+        updated_shape["attributes"]["_id"] = shape_id
+        updated = False
+        for shape in all_shapes:
+            if shape["attributes"]["_id"] == shape_id:
+                i = all_shapes.index(shape)
+                del self.shapes[i]
+                self.create_shape(updated_shape)
+                updated = True
+        return updated
+
 
     def delete_shape(self, shape_id):
         all_shapes = self.get_all_shapes()
         deleted = False
         for shape in all_shapes:
-            if shape["id"] == shape_id:
+            if shape["attributes"]["_id"] == shape_id:
                 i = all_shapes.index(shape)
                 del self.shapes[i]
                 deleted = True
@@ -45,13 +63,11 @@ class ShapeManager:
             raise KeyError
 
 
-
     def save_to_json(self):
         shapes = self.get_all_shapes()
         with open("shapes.json", "w", encoding="utf-8") as f:
             json.dump(shapes, f, indent=2)
         return
-
 
 
     def load_from_json(self):
@@ -61,10 +77,15 @@ class ShapeManager:
             # convert to objects
             for d in shapes_as_dicts:
                 self.create_shape(d)
-                # How to convert dict to object
         except JSONDecodeError:
             self.shapes = []
         return
+
+
+    def get_all_id_s(self):
+        all_shapes = self.get_all_shapes()
+        all_id_s = [shape["attributes"]["_id"] for shape in all_shapes]
+        return all_id_s
 
 
 
@@ -78,6 +99,3 @@ if __name__ == "__main__":
         print(type(s))
     else:
         print("empty")
-
-
-

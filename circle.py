@@ -4,7 +4,6 @@ from math import pi
 
 
 class Circle(Shape):
-
     """
         constructor:
             receives radius and quoter,
@@ -20,8 +19,8 @@ class Circle(Shape):
                 3. to_dict(self)
         """
 
-    def __init__(self, radius, quoter):
-        self._id = 0    # To-Do to complete the signature with 'id'
+    def __init__(self, radius, quoter, _id):
+        self._id = _id
         self._radius = radius
         self._quoter = quoter
         self._shape_type = "Circle"
@@ -55,9 +54,9 @@ class Circle(Shape):
         :return: the data dict
         """
         dicti = {
-            "id": self._id,
             "type": self._shape_type,
             "attributes": {
+                "_id": self._id,
                 "quoter": self._quoter,
                 "radius": self._radius
             }
