@@ -1,6 +1,6 @@
 from shape_manager import *
 from logging_config import get_logger
-
+from utils import get_valid_input, valid_attribute
 
 
 # ======================================================
@@ -27,18 +27,19 @@ def handle_create_shape(manager, logger):
 
     # dict functions, receive attributes per shape by input
     get_attributes = {
-        "1": get_rectangle,
-        "2": get_square,
-        "3": get_circle
+        "1" : get_rectangle,
+        "2" : get_square,
+        "3" : get_circle
     }
 
     print_available_shapes()
 
     # get available choice from user
-    choice = get_valid_input_shape()
+    print("Enter your choice!")
+    choice = get_valid_input(get_attributes.keys())
 
     # get match attributes per shape from user
-    shape = get_attributes[choice]()
+    shape = get_valid_attribute(choice)
 
     # add new id
     new_id = get_new_id(manager)
@@ -53,21 +54,36 @@ def handle_create_shape(manager, logger):
     return
 
 
-def get_input():
-    choice = input("Enter your choice: ")
-    return choice
-
-
-def get_valid_input_shape():
+def get_valid_attribute(choice):
     is_valid = False
-    user_input = ""
+    shapes = {
+        "1": get_rectangle,
+        "2": get_square,
+        "3": get_circle
+    }
     while not is_valid:
-        user_input = get_input()
-        if user_input in ("1","2","3"):
-            is_valid = True
-        else:
-            print("Invalid input")
-    return user_input
+        try:
+            new_shape = shapes[choice]()
+            is_valid = valid_attribute(new_shape)
+            if is_valid:
+                return new_shape
+            else:
+                print("\nEnter only a positive number")
+        except:
+            print("\nInvalid Input")
+    return
+
+
+# def get_valid_input_shape():
+#     is_valid = False
+#     user_input = ""
+#     while not is_valid:
+#         user_input = get_input()
+#         if user_input in ("1","2","3"):
+#             is_valid = True
+#         else:
+#             print("Invalid input")
+#     return user_input
 
 
 def print_available_shapes():
@@ -84,8 +100,8 @@ def get_rectangle():
     shape = {
         "type": "Rectangle",
         "attributes": {
-            "length": input("Enter length: "),
-            "width": input("Enter width: ")
+            "length": int(input("Enter length: ")),
+            "width": int(input(f"Enter width: "))
         }
     }
     return shape
@@ -225,16 +241,16 @@ def print_actions():
     return
 
 
-def get_valid_input_action():
-    is_valid = False
-    user_input = ""
-    while not is_valid:
-        user_input = get_input()
-        if user_input in ("1","2","3","4","5"):
-            is_valid = True
-        else:
-            print("Invalid input")
-    return user_input
+# def get_valid_input_action():
+#     is_valid = False
+#     user_input = ""
+#     while not is_valid:
+#         user_input = get_input()
+#         if user_input in ("1","2","3","4","5"):
+#             is_valid = True
+#         else:
+#             print("Invalid input")
+#     return user_input
 
 def to_exit(manager, logger):
     manager.save_to_json()
@@ -265,18 +281,25 @@ def main():
     logger = get_logger()
 
     actions = {
-        "1": handle_create_shape,
-        "2": handle_update_shape,
-        "3": handle_delete_shape,
-        "4": handle_display_shapes
+        "1" : handle_create_shape,
+        "2" : handle_update_shape,
+        "3" : handle_delete_shape,
+        "4" : handle_display_shapes,
+        "5" : to_exit
     }
-
     is_over = False
     while not is_over:
         print_actions()
-        choice = get_valid_input_action()
+        print("\nChoose an option!")
+
+        choice = get_valid_input(k for k in actions)
+
+
         if choice == "5":
-            is_over = to_exit(manager, logger)
+            to_exit(manager, logger)
+            is_over = True
+            return
+
         else:
             actions[choice](manager, logger)
 
@@ -285,4 +308,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 

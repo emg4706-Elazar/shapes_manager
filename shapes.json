@@ -28,5 +28,12 @@
       "_id": 3,
       "side": "8"
     }
+  },
+  {
+    "type": "Square",
+    "attributes": {
+      "_id": 5,
+      "side": "3"
+    }
   }
 ]
