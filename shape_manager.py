@@ -45,6 +45,7 @@ class ShapeManager:
                 del self.shapes[i]
                 self.create_shape(updated_shape)
                 updated = True
+                return updated
         return updated
 
 
