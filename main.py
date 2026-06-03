@@ -1,16 +1,14 @@
 from shape_manager import *
-from logging_config import get_logger
+from logging_config import logger
 
 
 
 # ======================================================
 
-def handle_create_shape(manager, logger):
+def handle_create_shape(manager, logger1):
     """
     To Do:
-        1. Adding logs.
         2. Input validation
-        3. match messages
     Flow:
         1. create dict function for input
         2. print available shapes
@@ -20,10 +18,10 @@ def handle_create_shape(manager, logger):
         6. call to manager function, create shape
 
     :param manager:
-    :param logger:
+    :param logger1:
     :return:
     """
-
+    logger1.info("'handle create shape started'")
 
     # dict functions, receive attributes per shape by input
     get_attributes = {
@@ -41,14 +39,16 @@ def handle_create_shape(manager, logger):
     shape = get_attributes[choice]()
 
     # add new id
-    new_id = get_new_id(manager)
+    new_id = manager.get_new_id()
     shape["attributes"]["_id"] = new_id
 
     try:
         manager.create_shape(shape)
+        logger1.info("handler created new shape")
         print("The shape was created successfully\n")
     except:
-        print("Exception")
+        logger1.warning("fail to create new shape")
+        print("fail to create new shape")
 
     return
 
@@ -122,12 +122,10 @@ def get_new_id(manager):
 
 #===============================================================
 
-def handle_display_shapes(manager, logger):
+def handle_display_shapes(manager, logger1):
     """
     To Do:
-        1. adding logs
         2. design the print shapes
-        3. print Match messages
     Flow:
         1. get all shapes from shape_manager.
         2. print all shapes with loop,
@@ -137,8 +135,10 @@ def handle_display_shapes(manager, logger):
     :return:
         None
     """
+    logger1.info("handler display shapes started")
     for shape in manager.get_all_shapes():
         print_shape(shape)
+    logger1.info("handler displayed all shapes")
     return
 
 def print_shape(shape):
@@ -146,12 +146,10 @@ def print_shape(shape):
 
 
 #================================================================
-def handle_update_shape(manager, logger):
+def handle_update_shape(manager, logger1):
     """
     To Do:
-        1. Adding logs
         2. valid input
-        3. match messages
     Flow:
         1. get input for exist id
         2. get all exist shapes from shapes manager
@@ -164,6 +162,7 @@ def handle_update_shape(manager, logger):
         2. logger
     :return: None
     """
+    logger1.info("handler update started")
     shape_id = int(input("Enter exist id: "))
     all_shapes = manager.get_all_shapes()
     class_name = ""
@@ -181,17 +180,17 @@ def handle_update_shape(manager, logger):
         updated = manager.update_shape(shape_id, new_data)
         if updated:
             print("The update completed")
+            logger1.info("shape was updated successfully")
     except Exception as e:
         print("This shape doesn't exist", e)
+        logger1.warning("handler update failed. wrong id")
     return
 
 #==================================================================
-def handle_delete_shape(manager, logger):
+def handle_delete_shape(manager, logger1):
     """
     To Do:
-        1. Adding logs
         2. valid input
-        3. match messages
     Flow:
         1. get input, id_shape
         2. call to manager function, delete with 1,
@@ -202,14 +201,16 @@ def handle_delete_shape(manager, logger):
         2. logger
     return: None
     """
+    logger1.info("handler delete shape started")
     shape_id = int(input("\nEnter exist id: "))
     try:
         deleted = manager.delete_shape(shape_id)
         if deleted:
             print("The shape was deleted successfully\n")
+            logger1.info("shape was deleted successfully")
     except KeyError:
         print("This ID doesn't exist\n")
-
+        logger1.warning("handler update failed. wrong id")
     return
 
 #===============================================================================
@@ -236,18 +237,19 @@ def get_valid_input_action():
             print("Invalid input")
     return user_input
 
-def to_exit(manager, logger):
+
+def to_exit(manager, logger1):
     manager.save_to_json()
     print("\nThe data saved\n")
     print("End")
     is_over = True
+    logger1.info("Shutdown")
     return is_over
 
 
-def main():
+def main(logger1):
     """
     To do:
-        1. Adding logs
         2. valid input
     Flow:
         1. init manager
@@ -262,7 +264,7 @@ def main():
     Returns:
     """
     manager = ShapeManager()
-    logger = get_logger()
+    logger1.info("'main' started")
 
     actions = {
         "1": handle_create_shape,
@@ -276,13 +278,12 @@ def main():
         print_actions()
         choice = get_valid_input_action()
         if choice == "5":
-            is_over = to_exit(manager, logger)
+            is_over = to_exit(manager, logger1)
         else:
-            actions[choice](manager, logger)
+            actions[choice](manager, logger1)
 
     return
 
 
 if __name__ == '__main__':
-    main()
-
+    main(logger)
