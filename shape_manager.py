@@ -15,6 +15,7 @@ class ShapeManager:
     def create_shape(self, shape):
         new_object = eval(shape["type"])(**shape["attributes"])
         self.shapes.append(new_object)
+        self.save_to_json()
         return
 
 
@@ -38,12 +39,13 @@ class ShapeManager:
         all_shapes = self.get_all_shapes()
         updated_shape = new_data
         updated_shape["attributes"]["_id"] = shape_id
+        self.create_shape(updated_shape)
         updated = False
         for shape in all_shapes:
             if shape["attributes"]["_id"] == shape_id:
                 i = all_shapes.index(shape)
                 del self.shapes[i]
-                self.create_shape(updated_shape)
+
                 updated = True
                 return updated
         return updated
@@ -87,6 +89,13 @@ class ShapeManager:
         all_shapes = self.get_all_shapes()
         all_id_s = [shape["attributes"]["_id"] for shape in all_shapes]
         return all_id_s
+
+
+
+
+
+
+
 
 
 

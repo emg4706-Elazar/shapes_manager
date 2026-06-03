@@ -2,31 +2,48 @@
   {
     "type": "Rectangle",
     "attributes": {
-      "_id": 0,
-      "length": "2",
-      "width": "3"
+      "_id": 9,
+      "length": 44,
+      "width": 65
+    }
+  },
+  {
+    "type": "Rectangle",
+    "attributes": {
+      "_id": 12,
+      "length": 7,
+      "width": 37
+    }
+  },
+  {
+    "type": "Rectangle",
+    "attributes": {
+      "_id": 13,
+      "length": 8,
+      "width": 37
+    }
+  },
+  {
+    "type": "Rectangle",
+    "attributes": {
+      "_id": 14,
+      "length": 8.0,
+      "width": 37.0
     }
   },
   {
     "type": "Circle",
     "attributes": {
-      "_id": 4,
-      "quoter": "4",
-      "radius": "3"
+      "_id": 15,
+      "quoter": 3.0,
+      "radius": 5.0
     }
   },
   {
     "type": "Square",
     "attributes": {
-      "_id": 1,
-      "side": "7"
-    }
-  },
-  {
-    "type": "Square",
-    "attributes": {
-      "_id": 3,
-      "side": "8"
+      "_id": 16,
+      "side": 3.0
     }
   }
 ]
