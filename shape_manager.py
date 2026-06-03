@@ -3,22 +3,46 @@ from circle import Circle
 from square import Square
 import json
 from json.decoder import JSONDecodeError
-
+from logging_config import logger
 
 
 class ShapeManager:
     def __init__(self):
+        """
+        Attributes:
+            1. self.shapes contains list of objects
+            2. self.load_from_json(), an Attribute method load into self.shapes.
+        """
         self.shapes = []
         self.load_from_json()
 
 
     def create_shape(self, shape):
+        """
+        receives dict with valid values
+        call to its constructor
+        adds the new object into self.shapes
+        save all objects into the JSON file
+        Args:
+            shape:
+
+        Returns:
+                None
+        """
         new_object = eval(shape["type"])(**shape["attributes"])
         self.shapes.append(new_object)
+        self.save_to_json()
         return
 
 
     def get_all_shapes(self):
+        """
+        go over the 'self.shapes'
+        convert all objects to dict
+        and return them as list of dicts
+        Returns:
+            list_of_dicts: (list[dicts])
+        """
         list_of_dicts = []
         for shape in self.shapes:
             conv_to_dict = shape.to_dict()
@@ -38,18 +62,27 @@ class ShapeManager:
         all_shapes = self.get_all_shapes()
         updated_shape = new_data
         updated_shape["attributes"]["_id"] = shape_id
+        self.create_shape(updated_shape)
         updated = False
         for shape in all_shapes:
             if shape["attributes"]["_id"] == shape_id:
                 i = all_shapes.index(shape)
                 del self.shapes[i]
-                self.create_shape(updated_shape)
+
                 updated = True
                 return updated
         return updated
 
 
     def delete_shape(self, shape_id):
+        """
+        delete shape by id
+        Args:
+            shape_id: (int)
+
+        Returns: (bool)
+
+        """
         all_shapes = self.get_all_shapes()
         deleted = False
         for shape in all_shapes:
@@ -89,14 +122,32 @@ class ShapeManager:
         return all_id_s
 
 
+    def get_new_id(self):
+        new_id = 0
+        if self.get_all_id_s():
+            maxi = max(self.get_all_id_s())
+            new_id = maxi + 1
+        return new_id
+
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     sp = ShapeManager()
-    # all_shapes = sp.get_all_shapes()
-    # print(all_shapes)
-    # dicti = {"type": Rectangle,
-    #          "attributes": {"length": 4, "width": 6}}
-    for s in sp.shapes:
-        print(type(s))
-    else:
-        print("empty")
+
+    dicti = {"type": "Rectangle",
+             "attributes": {"_id": 1, "length": 4, "width": 6}}
+    sp.create_shape(dicti)
+    print(sp.get_all_shapes())
+    sp.update_shape(1,dicti)
+    sp.save_to_json()
+    sp.load_from_json()
+    print(sp.get_all_shapes())
+    print(sp.get_new_id())
+    sp.delete_shape(1)
