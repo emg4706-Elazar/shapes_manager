@@ -14,3 +14,5 @@ def get_logger():
     l.addHandler(file_handler)
 
     return l
+
+logger = get_logger()

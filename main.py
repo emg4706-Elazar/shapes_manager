@@ -1,5 +1,7 @@
 from shape_manager import *
 from logging_config import logger
+# link to my GitHab
+# https://github.com/emg4706-Elazar/shapes_manager.git
 
 
 
